@@ -14,13 +14,19 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-{{- if and .Values.notebookMigrationService.enabled .Values.jupyterPool.createNamespaces }}
-apiVersion: v1
-kind: Namespace
+
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
 metadata:
-  name: {{ .Values.jupyterPool.namespace }}
-  {{- with .Values.jupyterPool.namespaceAnnotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-{{- end }}
+  name: {{ .Release.Name }}-envoy-proxy-config
+  namespace: {{ .Release.Namespace }}
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyDeployment:
+        pod:
+          {{- with .Values.gatewayConfig.envoyProxyPodAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}

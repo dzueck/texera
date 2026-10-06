@@ -30,6 +30,10 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-computing-unit-master-prepuller
+      {{- with .Values.workflowComputingUnitPool.prepullerPodAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       restartPolicy: Always
       tolerations:

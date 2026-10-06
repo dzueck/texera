@@ -31,6 +31,10 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-{{ .Values.workflowComputingUnitManager.name }}
+      {{- with .Values.workflowComputingUnitManager.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       serviceAccountName: {{ .Values.workflowComputingUnitManager.serviceAccountName }}
       initContainers:
