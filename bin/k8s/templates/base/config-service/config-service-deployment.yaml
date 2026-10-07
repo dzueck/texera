@@ -36,6 +36,9 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
+      {{- if .Values.global.texeraMicroServiceRuntimeClass }}
+      runtimeClassName: {{ .Values.global.texeraMicroServiceRuntimeClass | quote }}
+      {{- end }}    
       containers:
         - name: {{ .Values.configService.name }}
           image: {{ .Values.texera.imageRegistry }}/{{ .Values.configService.imageName }}:{{ .Values.texera.imageTag }}
